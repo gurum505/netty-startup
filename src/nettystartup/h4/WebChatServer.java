@@ -15,7 +15,9 @@ class WebChatServer {
             pipeline.addLast(new HttpObjectAggregator(65536));
             pipeline.addLast(new WebSocketHandshakeHandler("/chat", new WebChatHandler()));
             pipeline.addLast(new HttpStaticFileHandler("/", index));
-            // TODO: [실습4-1] 실습2-2와 마찬가지로 404 응답을 처리하게 합니다.
+            // [실습4-1] 실습2-2와 마찬가지로 404 응답을 처리하게 합니다.
+            pipeline.addLast(new HttpNotFoundHandler());
+
 
         });
     }
