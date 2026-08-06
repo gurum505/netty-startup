@@ -12,7 +12,8 @@ class HttpStaticServer {
             pipeline.addLast(new HttpServerCodec());
             pipeline.addLast(new HttpObjectAggregator(65536));
             pipeline.addLast(new HttpStaticFileHandler("/", index));
-            // TODO: [실습2-2] HttpNotFoundHandler를 써서 404응답을 처리합니다.
+            pipeline.addLast(new HttpNotFoundHandler()); // [실습2-2] HttpNotFoundHandler를 써서 404응답을 처리합니다.
+
 
         });
     }
