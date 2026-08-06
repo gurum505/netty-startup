@@ -14,9 +14,9 @@ final class EchoServer {
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class);
-            // TODO: [실습1-1] DiscardServer를 참고해서 이 부분을 채워 EchoServerHandler를 등록합니다
-
+                    .channel(NioServerSocketChannel.class)
+                    .childHandler(new EchoServerHandler())
+            ;
             ChannelFuture f = b.bind(8011).sync();
             System.err.println("Ready for 0.0.0.0:8011");
             f.channel().closeFuture().sync();
