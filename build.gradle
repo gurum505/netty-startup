@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        java { srcDirs = ['src'] }
+    }
+    test {
+        java { srcDirs = ['test'] }
+    }
+}
+
+dependencies {
+    implementation 'io.netty:netty-all:4.1.11.Final'
+    testImplementation 'junit:junit:4.12'
+}
+
+test {
+    useJUnit()
+}
