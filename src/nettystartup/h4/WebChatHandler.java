@@ -2,16 +2,16 @@ package nettystartup.h4;
 
 import io.netty.channel.*;
 import io.netty.handler.codec.http.websocketx.*;
-import nettystartup.h3.ChatServerHandler;
 
 class WebChatHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        // [실습4-2] 이 핸들러 바로 뒤에 코덱과 h3의 ChatServerHandler를 추가해서 연결합니다.
-        // WebChatHandler(TextWebSocketFrame) -> WebSocketChatCodec(ChatMessage 변환) -> ChatServerHandler(PING/QUIT/SEND/NICK 처리)
+        // [실습4-2 + 도전과제] 이 핸들러 바로 뒤에 WebSocketChatCodec을 추가하고,
+        // h3의 ChatServerHandler를 직접 붙이는 대신(실습4-2) h3 프로세스에 TCP로 프록시 연결한다(도전과제).
+        // WebChatHandler(TextWebSocketFrame) -> WebSocketChatCodec(ChatMessage 변환) -> ChatProxyHandler(h3로 릴레이)
         String name = handlerName(ctx);
         ctx.pipeline().addAfter(name, "wsChatCodec", new WebSocketChatCodec());
-        ctx.pipeline().addAfter("wsChatCodec", "chatHandler", new ChatServerHandler());
+        ChatProxyHandler.connectToChatServer(ctx.channel());
     }
 
     // 채널 파이프라인에서 현재핸들러가 등록된 이름을 구합니다.
